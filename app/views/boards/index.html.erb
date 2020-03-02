@@ -1,0 +1,7 @@
+<h1> Bro we're on our way</h1>
+
+
+<% @boards.each do |board| %>
+  <p><%= board.content %></p>
+  <td><%= link_to 'Go To Board', board_path(board)  %></td>
+<% end %>

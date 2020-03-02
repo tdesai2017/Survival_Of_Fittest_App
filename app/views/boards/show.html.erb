@@ -1,0 +1,15 @@
+
+
+
+<!--cells.each {|row| print("#{row}\n")}-->
+
+<% @cells.each do |row| %>
+  <h1><%= row %></h1>
+  <br>
+<% end %>
+
+<br>
+<%= link_to 'Back', '/boards' %>
+
+<!--Same as-->
+<%#= link_to 'Back', boards_path %>
