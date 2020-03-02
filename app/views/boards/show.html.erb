@@ -1,15 +1,53 @@
-
-
-
 <!--cells.each {|row| print("#{row}\n")}-->
 
-<% @cells.each do |row| %>
-  <h1><%= row %></h1>
-  <br>
+<div style = "text-align: center; margin-top: 100px">
+  <% @cells.length.times do |row| %>
+    <% @cells[row].length.times do |col| %>
+      <%if @cells[row][col] == 1 %>
+
+<!--        <form action = <%#= "/boards/' + #{@board.id.to_s} + '/next_state"%>-->
+        <form style = 'display:inline' method = 'get' action = <%= "/boards/#{@board.id.to_s}/next_state"%>  >
+          <button type = submit style = "background-color: #99ffcc" value = <%= {"row" => row, "col" => col} %>  >L <%= [row, col] %> </button>
+        </form>
+
+<!--        Finish forms clicking etc-->
+
+      <%else%>
+        <button >D <%= [row, col] %>  </button>
+
+      <% end %>
+
+    <% end %>
+    <br>
+
 <% end %>
 
+
+</div>
+
+
+
+<%#= f.button  :submit , name: "subaction",value: "update"%>
+
+
+
+
 <br>
+
+<%= button_to "Next State", '/boards/' + @board.id.to_s+ '/next_state', :id => "open-contacts-dialog-btn",
+              :class => "inbox-sf-add-btn tip", :method => :get %>
+
+<br>
+
+<%= button_to "Restart State", '/boards/' + @board.id.to_s+ '/restart_state', :id => "open-contacts-dialog-btn",
+              :class => "inbox-sf-add-btn tip", :method => :get %>
+<br>
+
 <%= link_to 'Back', '/boards' %>
+
+
+
+
 
 <!--Same as-->
 <%#= link_to 'Back', boards_path %>

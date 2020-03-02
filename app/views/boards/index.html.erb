@@ -2,6 +2,6 @@
 
 
 <% @boards.each do |board| %>
-  <p><%= board.content %></p>
+  <p><%= board.current_state %></p>
   <td><%= link_to 'Go To Board', board_path(board)  %></td>
 <% end %>
