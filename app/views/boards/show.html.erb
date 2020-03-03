@@ -1,55 +1,67 @@
 <!--cells.each {|row| print("#{row}\n")}-->
 
-<div style = "text-align: center; margin-top: 100px">
-  <% @cells.length.times do |row| %>
-    <% @cells[row].length.times do |col| %>
-      <%if @cells[row][col] == 1 %>
 
-<!--        local = true ensures that the page will refresh after the submission is complete-->
-        <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
-          <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
-          <%= submit_tag( "L [#{row}, #{col}]", style: "background-color: #99ffcc") %>
+
+
+<!--<button class="button is-primary">Primary</button>-->
+
+
+
+
+
+<div class="columns">
+  <div class="column" id = "column_1">
+
+      <br>
+      <%= button_to "Next State", next_state_path, :id => "open-contacts-dialog-btn",
+                    :class => "inbox-sf-add-btn tip", :method => :get %>
+      <br>
+      <%= button_to "Restart State", restart_state_path, :id => "open-contacts-dialog-btn",
+                    :class => "inbox-sf-add-btn tip", :method => :get %>
+      <br>
+      <%= link_to 'Back', boards_path %>
+
+  </div>
+
+  <div class="column is-half" id = "column_2">
+
+    <div style = "text-align: center; margin-top: 100px">
+      <% @cells.length.times do |row| %>
+        <% @cells[row].length.times do |col| %>
+          <%if @cells[row][col] == 1 %>
+
+            <!--        local = true ensures that the page will refresh after the submission is complete-->
+            <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+              <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+              <%= submit_tag( "L",class: "button is-primary", style: "margin: 5px; height:40px; width:40px") %>
+            <% end %>
+
+          <%else%>
+            <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+              <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+              <%= submit_tag( "D",class: "button is-danger", style: "margin: 5px; height:40px; width:40px") %>
+            <% end %>
+
+          <% end %>
+
         <% end %>
-
-      <%else%>
-        <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
-          <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
-          <%= submit_tag( "D [#{row}, #{col}]") %>
-        <% end %>
-
+        <br>
       <% end %>
 
-    <% end %>
+    </div>
+  </div>
+  <div class="column" id = "column_3">
+    <%="Current Generation: #{@board.generation}" %>
     <br>
+<!--Must first include "new board" functionality before we can compute this-->
+    <%= "Live Cells:" %>
+    <br>
+    <%= "Dead Cells:" %>
 
-<% end %>
 
+
+  </div>
 </div>
-
-<%= form_with url: flip_cell_path do |form| %>
-  <%#= form.text_field :title %>
-  <%#= f.submit 'A' %>
-<% end %>
-
-
-
-<%#= f.button  :submit , name: "subaction",value: "update"%>
-
-
-
-
-<br>
-
-<%= button_to "Next State", next_state_path, :id => "open-contacts-dialog-btn",
-              :class => "inbox-sf-add-btn tip", :method => :get %>
-
-<br>
-
-<%= button_to "Restart State", restart_state_path, :id => "open-contacts-dialog-btn",
-              :class => "inbox-sf-add-btn tip", :method => :get %>
-<br>
-
-<%= link_to 'Back', boards_path %>
 
 
 

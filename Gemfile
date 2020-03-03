@@ -6,6 +6,9 @@ ruby '2.7.0'
 #Let's hope this works
 gem 'rails_admin', '~> 2.0'
 
+#Bulma style framework
+gem 'bulma-rails', '~> 0.0.4.1'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'

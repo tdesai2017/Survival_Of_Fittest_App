@@ -1,7 +1,42 @@
-<h1> Bro we're on our way</h1>
 
 
+<style>
+  .box{
+    display: none;
+    width: 100%;
+  }
+
+  a:hover + .box,.box:hover{
+    display: block;
+    position: relative;
+    z-index: 100;
+  }
+</style>
+
+
+<h1> Explorer Terminal </h1>
+
+<br>
+<br>
+
+<%count = 1 %>
 <% @boards.each do |board| %>
-  <p><%= board.current_state %></p>
-  <td><%= link_to 'Go To Board', board_path(board)  %></td>
+
+  Board <%= count %>: <a href=<%= "/boards/" + board.id.to_s %>>Link</a>
+  <div class="box">
+    <iframe src= <%= "/boards/" + board.id.to_s %>, width = "800px", height = "600">
+    </iframe>
+  </div>
+  <br>
+  <br>
+  <% count += 1 %>
+
+
 <% end %>
+
+<!--This live preview for <a href="https://en.wikipedia.org/">Wikipedia</a>-->
+<!--<div class="box">-->
+<!--  <iframe src="http://localhost:3000/boards/2" width = "500px" height = "500px">-->
+<!--  </iframe>-->
+<!--</div>-->
+<!--remains open on mouseover.-->

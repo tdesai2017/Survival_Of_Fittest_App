@@ -6,6 +6,10 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
+  def new
+    @boards
+  end
+
   def show
     @board = Board.find(params[:id])
     current_state = @board.current_state
@@ -39,6 +43,7 @@ class BoardsController < ApplicationController
 
     #sets board's current_state to include new current_state
     @board.current_state = new_board
+    @board.generation = @board.generation + 1
     @board.save
 
     redirect_to @board
@@ -49,6 +54,7 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
     initial_state = @board.initial_state
     @board.current_state = initial_state
+    @board.generation = 0
     @board.save
     redirect_to @board
   end
@@ -79,6 +85,7 @@ class BoardsController < ApplicationController
     cells = {"cells" => cells}.to_json
     print(cells)
     @board.current_state = cells
+    @board.generation = 0
     @board.save
     redirect_to @board
 
