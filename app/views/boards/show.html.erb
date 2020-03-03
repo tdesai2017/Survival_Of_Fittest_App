@@ -5,15 +5,17 @@
     <% @cells[row].length.times do |col| %>
       <%if @cells[row][col] == 1 %>
 
-<!--        <form action = <%#= "/boards/' + #{@board.id.to_s} + '/next_state"%>-->
-        <form style = 'display:inline' method = 'get' action = <%= "/boards/#{@board.id.to_s}/next_state"%>  >
-          <button type = submit style = "background-color: #99ffcc" value = <%= {"row" => row, "col" => col} %>  >L <%= [row, col] %> </button>
-        </form>
-
-<!--        Finish forms clicking etc-->
+<!--        local = true ensures that the page will refresh after the submission is complete-->
+        <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+          <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+          <%= submit_tag( "L [#{row}, #{col}]", style: "background-color: #99ffcc") %>
+        <% end %>
 
       <%else%>
-        <button >D <%= [row, col] %>  </button>
+        <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+          <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+          <%= submit_tag( "D [#{row}, #{col}]") %>
+        <% end %>
 
       <% end %>
 
@@ -22,8 +24,12 @@
 
 <% end %>
 
-
 </div>
+
+<%= form_with url: flip_cell_path do |form| %>
+  <%#= form.text_field :title %>
+  <%#= f.submit 'A' %>
+<% end %>
 
 
 
@@ -34,16 +40,16 @@
 
 <br>
 
-<%= button_to "Next State", '/boards/' + @board.id.to_s+ '/next_state', :id => "open-contacts-dialog-btn",
+<%= button_to "Next State", next_state_path, :id => "open-contacts-dialog-btn",
               :class => "inbox-sf-add-btn tip", :method => :get %>
 
 <br>
 
-<%= button_to "Restart State", '/boards/' + @board.id.to_s+ '/restart_state', :id => "open-contacts-dialog-btn",
+<%= button_to "Restart State", restart_state_path, :id => "open-contacts-dialog-btn",
               :class => "inbox-sf-add-btn tip", :method => :get %>
 <br>
 
-<%= link_to 'Back', '/boards' %>
+<%= link_to 'Back', boards_path %>
 
 
 

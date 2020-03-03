@@ -51,6 +51,37 @@ class BoardsController < ApplicationController
     @board.current_state = initial_state
     @board.save
     redirect_to @board
+  end
+
+  #Careful with the security implications of using "Eval" --> everything inside
+  # it will be evaluated = can be dangerous if someone sends a rogue request in
+  def flip_cell
+    @board = Board.find(params[:id])
+
+    #converts given json string into a workable hash
+    # string comes in the form of {"row"=>0, "col"=>1}
+    # represent coordinates of cell we will flip
+    coordinates = eval(params[:coordinates])
+
+    current_state = @board.current_state
+    data = JSON.parse(current_state)  # <--- no `to_json`
+    cells = data["cells"]
+
+    row_to_change = coordinates["row"].to_i
+    col_to_change = coordinates["col"].to_i
+
+    if cells[row_to_change][col_to_change] == 0
+      cells[row_to_change][col_to_change] = 1
+    else
+      cells[row_to_change][col_to_change] = 0
+    end
+
+    cells = {"cells" => cells}.to_json
+    print(cells)
+    @board.current_state = cells
+    @board.save
+    redirect_to @board
+
 
   end
 
