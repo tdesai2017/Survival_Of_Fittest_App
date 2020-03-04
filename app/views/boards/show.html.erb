@@ -27,8 +27,17 @@
 <div class="columns">
   <div class="column" id = "column_1">
     <div style = "margin-left: 40%">
-      <p class = "subtitle is-3" style = 'margin-bottom: 5px'>Rows:</p>
 
+      <p class = "subtitle is-4" style = 'margin-bottom: 5px'>Custom Board:</p>
+      <%= form_with(url: custom_board_path, method: "post") do %>
+        <%= text_field_tag(:custom_board, "", class: 'control') %>
+        <br>
+        <%= submit_tag("Create", style: "margin-top: 10px;") %>
+      <% end %>
+      <br>
+
+
+      <p class = "subtitle is-4" style = 'margin-bottom: 5px'>Rows:</p>
       <%= form_with(url: add_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
         <%= hidden_field_tag(:add_right_row, true) %>
         <%=button_tag '+', type: 'submit', class: 'button is-small is-rounded', style: "width:35px" %>
@@ -41,7 +50,7 @@
 
       <br>
       <br>
-      <p class = "subtitle is-3" style = 'margin-bottom: 5px'>Columns:</p>
+      <p class = "subtitle is-4" style = 'margin-bottom: 5px'>Columns:</p>
 
       <%= form_with(url: add_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
         <%= hidden_field_tag(:add_bottom_col, true) %>
@@ -83,13 +92,13 @@
 
             <!--        local = true ensures that the page will refresh after the submission is complete-->
             <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-              <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+              <%= hidden_field_tag(:coordinates, "{\"row\" : #{row}, \"col\": #{col}}") %>
               <%= submit_tag( "L",class: "button is-primary is-rounded", style: "margin: 2px; height:40px; width:40px") %>
             <% end %>
 
           <%else%>
             <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-              <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
+              <%= hidden_field_tag(:coordinates, "{\"row\" : #{row}, \"col\": #{col}}") %>
               <%= submit_tag( "D",class: "button is-danger is-rounded is-outlined", style: "margin: 2px; height:40px; width:40px") %>
             <% end %>
 

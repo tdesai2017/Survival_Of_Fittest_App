@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   post '/boards/:id/remove_col', to: 'boards#remove_col', as: :remove_col
   post '/boards/:id/remove_row', to: 'boards#remove_row', as: :remove_row
   post '/boards/:id/save_as_initial_state', to: 'boards#save_as_initial_state', as: :save_as_initial_state
+  post '/boards/:id/custom_board', to: 'boards#custom_board', as: :custom_board
+
 
 
 

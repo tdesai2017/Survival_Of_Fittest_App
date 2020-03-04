@@ -19,7 +19,6 @@ class BoardsController < ApplicationController
                  "generation" => 0,
                  "alive_count" => 5,
                  "dead_count" => 7
-
                 }
     @board = Board.new(new_board)
     @board.save
@@ -85,7 +84,9 @@ class BoardsController < ApplicationController
     #converts given json string into a workable hash
     # string comes in the form of {"row"=>0, "col"=>1}
     # represent coordinates of cell we will flip
-    coordinates = eval(params[:coordinates])
+    #
+
+    coordinates = JSON.parse(params[:coordinates])
 
     cells = get_current_board_cells(@board)
 
@@ -188,6 +189,47 @@ class BoardsController < ApplicationController
       @board.dead_count -= dead_count_decrease
       @board.save
     end
+    redirect_to @board
+  end
+
+  def custom_board
+    @board = Board.find(params[:id])
+    #Ensures you are given a valid array input
+    begin
+      custom_board = JSON.parse(params[:custom_board])
+      #Otherwise, an input of '0' will pass through
+      redirect_to @board and return if custom_board[row].class.to_s != "Array"
+    rescue => e
+      redirect_to @board and return
+    end
+    #validates that board is made up of only 0s and 1s
+    # also counts the number of 1s and 0s
+    alive_count = 0
+    dead_count = 0
+    custom_board.length.times do |row|
+      redirect_to @board and return if custom_board[row].class.to_s != "Array"
+      custom_board[row].length.times do |col|
+        #Ensures each value is either a 0 or a 1
+        if custom_board[row][col] != 0 && custom_board[row][col] != 1
+
+          puts('####################')
+          print(custom_board[row][col])
+          puts("\n####################")
+
+          redirect_to @board and return
+
+        end
+        custom_board[row][col].zero? ? dead_count += 1 : alive_count += 1
+      end
+    end
+    new_board = {"current_state" => "{\"cells\":#{params[:custom_board]}}",
+                 "initial_state" => "{\"cells\":#{params[:custom_board]}}",
+                 "generation" => 0,
+                 "alive_count" => alive_count,
+                 "dead_count" => dead_count}
+    @board = Board.new(new_board)
+    @board.save
+
     redirect_to @board
   end
 
