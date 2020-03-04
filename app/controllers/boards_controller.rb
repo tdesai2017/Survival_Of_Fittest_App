@@ -198,7 +198,7 @@ class BoardsController < ApplicationController
     begin
       custom_board = JSON.parse(params[:custom_board])
       #Otherwise, an input of '0' will pass through
-      redirect_to @board and return if custom_board[row].class.to_s != "Array"
+      redirect_to @board and return if custom_board[0].class.to_s != "Array"
     rescue => e
       redirect_to @board and return
     end
@@ -211,11 +211,6 @@ class BoardsController < ApplicationController
       custom_board[row].length.times do |col|
         #Ensures each value is either a 0 or a 1
         if custom_board[row][col] != 0 && custom_board[row][col] != 1
-
-          puts('####################')
-          print(custom_board[row][col])
-          puts("\n####################")
-
           redirect_to @board and return
 
         end
