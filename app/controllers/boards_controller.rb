@@ -192,6 +192,18 @@ class BoardsController < ApplicationController
     redirect_to @board
   end
 
+  # Really cool custom board:
+  # {"cells":[[1,0,1,0,1,0,1,0,1,0,1],
+  # [0,1,0,1,0,1,0,1,0,1,0],
+  # [1,0,1,0,1,0,1,0,1,0,1],
+  # [0,1,0,1,0,1,0,1,0,1,0],
+  # [1,0,1,0,1,0,1,0,1,0,1],
+  # [0,1,0,1,0,1,0,1,0,1,0],
+  # [1,1,1,1,1,1,1,1,1,1,1],
+  # [0,1,0,1,0,1,0,1,0,1,0],
+  # [1,0,1,0,1,0,1,0,1,0,1],
+  # [0,1,0,1,0,1,0,1,0,1,0],
+  # [1,0,1,0,1,0,1,0,1,0,1]]}
   def custom_board
     @board = Board.find(params[:id])
     #Ensures you are given a valid array input

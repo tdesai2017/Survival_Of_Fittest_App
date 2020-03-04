@@ -47,7 +47,7 @@
   <!--  <a href=<%#= "/boards/" + board.id.to_s %>>Link</a>-->
     <%= form_with(url: board_path(board), local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
       <%=button_tag 'Board ' + count.to_s, type: 'submit', class: 'button is-medium is-rounded is-outlined is-info'%>
-      <div class="box">
+      <div class="box", style = "width: 600px; height: 600px">
         <iframe src= <%="/boards/"+board.id.to_s %>, width = "600px", height = "600px" style = "border-top:3px solid black;">
         </iframe>
       </div>
