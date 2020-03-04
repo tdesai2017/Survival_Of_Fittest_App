@@ -217,12 +217,17 @@ class BoardsController < ApplicationController
         custom_board[row][col].zero? ? dead_count += 1 : alive_count += 1
       end
     end
-    new_board = {"current_state" => "{\"cells\":#{params[:custom_board]}}",
-                 "initial_state" => "{\"cells\":#{params[:custom_board]}}",
-                 "generation" => 0,
-                 "alive_count" => alive_count,
-                 "dead_count" => dead_count}
-    @board = Board.new(new_board)
+    new_board = {:current_state => "{\"cells\":#{params[:custom_board]}}",
+                 :initial_state => "{\"cells\":#{params[:custom_board]}}",
+                 :generation => 0,
+                 :alive_count => alive_count,
+                 :dead_count => dead_count}
+
+    @board.assign_attributes(:current_state => new_board[:current_state],
+                              :initial_state => new_board[:initial_state],
+                              :generation => new_board[:generation],
+                              :alive_count => new_board[:alive_count],
+                              :dead_count => new_board[:dead_count])
     @board.save
 
     redirect_to @board
