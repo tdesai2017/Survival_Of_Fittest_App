@@ -9,7 +9,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  a:hover + .box,.box:hover{
+  button:hover + .box,.box:hover{
     display: block;
     position: relative;
     z-index: 100;
@@ -17,32 +17,50 @@
 </style>
 
 
-<h1> Explorer Terminal </h1>
 
-<br>
-<br>
-
-<%= form_with(url: boards_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-  <%=button_tag 'New Board', type: 'submit', class: 'button is-small'%>
-<% end %>
-
-<br>
-<br>
-
-<%count = 1 %>
-<% @boards.each do |board| %>
-
-  Board <%= count %>: <a href=<%= "/boards/" + board.id.to_s %>>Link</a>
-  <div class="box">
-    <iframe src= <%="/boards/"+board.id.to_s %>, width = "600px", height = "600px" style = "border-top:3px solid black;">
-    </iframe>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Conway's Game Visual Simulator
+    </p>
+    <p class="subtitle">
+      "The resourceful live, and the rest can only perish"
+    </p>
   </div>
+</section>
+
+<div style = "margin-left: 30px">
   <br>
   <br>
-  <% count += 1 %>
+
+  <%= form_with(url: boards_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+    <%=button_tag 'New Board', type: 'submit', class: 'button is-large is-rounded is-outlined is-primary'%>
+  <% end %>
+
+  <br>
+  <br>
+  <br>
+
+  <%count = 1 %>
+  <% @boards.each do |board| %>
+
+  <!--  <a href=<%#= "/boards/" + board.id.to_s %>>Link</a>-->
+    <%= form_with(url: board_path(board), local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+      <%=button_tag 'Board ' + count.to_s, type: 'submit', class: 'button is-medium is-rounded is-outlined is-info'%>
+      <div class="box">
+        <iframe src= <%="/boards/"+board.id.to_s %>, width = "600px", height = "600px" style = "border-top:3px solid black;">
+        </iframe>
+      </div>
+      <br>
+      <br>
+      <% count += 1 %>
+    <% end %>
 
 
-<% end %>
+
+  <% end %>
+
+</div>
 
 <!--This live preview for <a href="https://en.wikipedia.org/">Wikipedia</a>-->
 <!--<div class="box">-->

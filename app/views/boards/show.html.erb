@@ -1,73 +1,82 @@
 
+<nav class="navbar is-success" role="navigation" aria-label="main navigation" style = 'margin-bottom: 90px'>
+  <div class="navbar-brand">
+<!--    #dccbb1-->
+
+
+
+    <div style = "margin:30px" class="navbar-item" href="https://bulma.io">
+      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    </div>
+      <div class="navbar-item title is-5 ">
+        <p  style = "margin-right:30px"><%="Current Generation: #{@board.generation}" %></p>
+        <p style = "margin-right:30px"><%= "Live Cells: " + @board.alive_count.to_s%></p>
+        <p style = "margin-right:30px"><%= "Dead Cells: " + @board.dead_count.to_s%></p>
+
+
+      </div>
+
+
+    </div>
+
+
+</nav>
+
+
+
 <div class="columns">
   <div class="column" id = "column_1">
+    <div style = "margin-left: 40%">
+      <p class = "subtitle is-3" style = 'margin-bottom: 5px'>Rows:</p>
 
-    <%="Current Generation: #{@board.generation}" %>
-    <br>
-    <!--Must first include "new board" functionality before we can compute this-->
-    <%= "Live Cells: " + @board.alive_count.to_s%>
-    <br>
+      <%= form_with(url: add_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+        <%= hidden_field_tag(:add_right_row, true) %>
+        <%=button_tag '+', type: 'submit', class: 'button is-small is-rounded', style: "width:35px" %>
+      <% end %>
 
-    <%= "Dead Cells: " + @board.dead_count.to_s%>
-    <br>
-
-    Rows:
-
-    <%= form_with(url: add_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-      <%= hidden_field_tag(:add_right_row, true) %>
-      <%=button_tag '+', type: 'submit', class: 'button is-small'%>
-    <% end %>
-
-    <%= form_with(url: remove_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-      <%= hidden_field_tag(:remove_right_Row, true) %>
-      <%=button_tag '-', type: 'submit', class: 'button is-small'%>
-    <% end %>
-    <br>
-
-    Columns:
-
-    <%= form_with(url: add_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-      <%= hidden_field_tag(:add_bottom_col, true) %>
-      <%=button_tag '+', type: 'submit', class: 'button is-small'%>
-    <% end %>
-
-    <%= form_with(url: remove_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
-      <%= hidden_field_tag(:remove_bottom_Col, true) %>
-      <%=button_tag '-', type: 'submit', class: 'button is-small'%>
-    <% end %>
-
-
-
-    <br>
-
-
-    <%#= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
-    <!--      <p>New State:</p>-->
-    <%#= text_field_tag :'new_state' %>
-
-    <%#= submit_tag( "Submit",class: "button is-primary", style: "margin: 10px") %>
-    <%# end %>
+      <%= form_with(url: remove_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+        <%= hidden_field_tag(:remove_right_Row, true) %>
+        <%=button_tag '-', type: 'submit', class: 'button is-small is-rounded', style: "width:35px" %>
+      <% end %>
 
       <br>
-      <%= button_to "Next State", next_state_path %>
+      <br>
+      <p class = "subtitle is-3" style = 'margin-bottom: 5px'>Columns:</p>
+
+      <%= form_with(url: add_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+        <%= hidden_field_tag(:add_bottom_col, true) %>
+        <%=button_tag '+', type: 'submit', class: 'button is-small is-rounded', style: "width:35px" %>
+      <% end %>
+
+      <%= form_with(url: remove_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+        <%= hidden_field_tag(:remove_bottom_Col, true) %>
+        <%=button_tag '-', type: 'submit', class: 'button is-small is-rounded', style: "width:35px" %>
+      <% end %>
+
+
+
+    <br>
+
+      <br>
+      <%= button_to "Next State", next_state_path, class: 'button is-medium is-rounded is-outlined is-primary' %>
       <br>
 
-      <%= button_to "Restart State", restart_state_path %>
+      <%= button_to "Restart State", restart_state_path, class: 'button is-medium is-rounded is-outlined is-warning' %>
       <br>
 
-      <%= button_to "Save as Initial State", save_as_initial_state_path %>
+      <%= button_to "Save as Initial State", save_as_initial_state_path, class: 'button is-medium is-rounded is-outlined is-link' %>
       <br>
 
-      <%= button_to "Delete Board", board_path, :method => :delete %>
+      <%= button_to "Delete Board", board_path, :method => :delete, class: 'button is-medium is-danger is-rounded is-outlined' %>
 
     <br>
       <%= link_to 'Back', boards_path %>
-
+    </div>
   </div>
 
   <div class="column is-three-fifths">
 
-    <div style = " margin-top: 100px">
+    <div style = " margin-top: 50px">
       <% @cells.length.times do |row| %>
         <% @cells[row].length.times do |col| %>
           <%if @cells[row][col] == 1 %>
