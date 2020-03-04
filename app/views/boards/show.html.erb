@@ -5,10 +5,10 @@
     <%="Current Generation: #{@board.generation}" %>
     <br>
     <!--Must first include "new board" functionality before we can compute this-->
-    <%= "Live Cells:" %>
+    <%= "Live Cells: " + @board.alive_count.to_s%>
     <br>
 
-    <%= "Dead Cells:" %>
+    <%= "Dead Cells: " + @board.dead_count.to_s%>
     <br>
 
     Rows:
