@@ -1,45 +1,87 @@
-<!--cells.each {|row| print("#{row}\n")}-->
-
-
-
-
-<!--<button class="button is-primary">Primary</button>-->
-
-
-
-
 
 <div class="columns">
   <div class="column" id = "column_1">
 
+    <%="Current Generation: #{@board.generation}" %>
+    <br>
+    <!--Must first include "new board" functionality before we can compute this-->
+    <%= "Live Cells:" %>
+    <br>
+
+    <%= "Dead Cells:" %>
+    <br>
+
+    Rows:
+
+    <%= form_with(url: add_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+      <%= hidden_field_tag(:add_right_row, true) %>
+      <%=button_tag '+', type: 'submit', class: 'button is-small'%>
+    <% end %>
+
+    <%= form_with(url: remove_row_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+      <%= hidden_field_tag(:remove_right_Row, true) %>
+      <%=button_tag '-', type: 'submit', class: 'button is-small'%>
+    <% end %>
+    <br>
+
+    Columns:
+
+    <%= form_with(url: add_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+      <%= hidden_field_tag(:add_bottom_col, true) %>
+      <%=button_tag '+', type: 'submit', class: 'button is-small'%>
+    <% end %>
+
+    <%= form_with(url: remove_col_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+      <%= hidden_field_tag(:remove_bottom_Col, true) %>
+      <%=button_tag '-', type: 'submit', class: 'button is-small'%>
+    <% end %>
+
+
+
+    <br>
+
+
+    <%#= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+    <!--      <p>New State:</p>-->
+    <%#= text_field_tag :'new_state' %>
+
+    <%#= submit_tag( "Submit",class: "button is-primary", style: "margin: 10px") %>
+    <%# end %>
+
       <br>
-      <%= button_to "Next State", next_state_path, :id => "open-contacts-dialog-btn",
-                    :class => "inbox-sf-add-btn tip", :method => :get %>
+      <%= button_to "Next State", next_state_path %>
       <br>
-      <%= button_to "Restart State", restart_state_path, :id => "open-contacts-dialog-btn",
-                    :class => "inbox-sf-add-btn tip", :method => :get %>
+
+      <%= button_to "Restart State", restart_state_path %>
       <br>
+
+      <%= button_to "Save as Initial State", save_as_initial_state_path %>
+      <br>
+
+      <%= button_to "Delete Board", board_path, :method => :delete %>
+
+    <br>
       <%= link_to 'Back', boards_path %>
 
   </div>
 
-  <div class="column is-half" id = "column_2">
+  <div class="column is-three-fifths">
 
-    <div style = "text-align: center; margin-top: 100px">
+    <div style = " margin-top: 100px">
       <% @cells.length.times do |row| %>
         <% @cells[row].length.times do |col| %>
           <%if @cells[row][col] == 1 %>
 
             <!--        local = true ensures that the page will refresh after the submission is complete-->
-            <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+            <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
               <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
-              <%= submit_tag( "L",class: "button is-primary", style: "margin: 5px; height:40px; width:40px") %>
+              <%= submit_tag( "L",class: "button is-primary is-rounded", style: "margin: 2px; height:40px; width:40px") %>
             <% end %>
 
           <%else%>
-            <%= form_with(url: flip_cell_path, local:true, method: "get", :html => { :style => 'display:inline;' }) do %>
+            <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
               <%= hidden_field_tag(:coordinates, {"row" => row, "col"=> col}) %>
-              <%= submit_tag( "D",class: "button is-danger", style: "margin: 5px; height:40px; width:40px") %>
+              <%= submit_tag( "D",class: "button is-danger is-rounded is-outlined", style: "margin: 2px; height:40px; width:40px") %>
             <% end %>
 
           <% end %>
@@ -50,17 +92,7 @@
 
     </div>
   </div>
-  <div class="column" id = "column_3">
-    <%="Current Generation: #{@board.generation}" %>
-    <br>
-<!--Must first include "new board" functionality before we can compute this-->
-    <%= "Live Cells:" %>
-    <br>
-    <%= "Dead Cells:" %>
 
-
-
-  </div>
 </div>
 
 

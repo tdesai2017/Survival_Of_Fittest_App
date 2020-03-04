@@ -6,40 +6,49 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
-  def new
-    @boards
-  end
-
   def show
     @board = Board.find(params[:id])
-    current_state = @board.current_state
-    data = JSON.parse(current_state)  # <--- no `to_json`
-    @cells = data["cells"]
+    @cells = get_current_board_cells(@board)
+  end
 
+  def create
+    new_board = {"current_state" => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
+                 "initial_state" => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
+                 "generation" => 0
+                }
+    @board = Board.new(new_board)
+    @board.save
+    redirect_to boards_path
+  end
 
-    #prints to terminal
-    # @cells.each {|row| print("#{row}\n")}
+  #Automatically get access to the respective ID since we are redirecting
+  # from a "show" page
+  def destroy
+    @board = Board.find(params[:id])
+    @board.destroy
+    redirect_to boards_path
+  end
+
+  def save_as_initial_state
+    @board = Board.find(params[:id])
+    @board.initial_state = @board.current_state
+    @board.save
+    redirect_to board_path
+
   end
 
   def next_state
     @board = Board.find(params[:id])
-    current_state = @board.current_state
-    data = JSON.parse(current_state)  # <--- no `to_json`
-    cells = data["cells"]
+    @cells = get_current_board_cells(@board)
 
     #Gets next iteration of board according to rules
-    cg_instance = ConwaysGame.new(cells)
+    cg_instance = ConwaysGame.new(@cells)
     cg_instance.next_generation
     cells = cg_instance.board
     new_board = {"cells" => cells }
 
     #Converts board to JSON Rep to save to db
     new_board = new_board.to_json
-
-    print("\n#{new_board}\n")
-
-    #inital board
-    # {"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}
 
     #sets board's current_state to include new current_state
     @board.current_state = new_board
@@ -69,9 +78,8 @@ class BoardsController < ApplicationController
     # represent coordinates of cell we will flip
     coordinates = eval(params[:coordinates])
 
-    current_state = @board.current_state
-    data = JSON.parse(current_state)  # <--- no `to_json`
-    cells = data["cells"]
+    cells = get_current_board_cells(@board)
+
 
     row_to_change = coordinates["row"].to_i
     col_to_change = coordinates["col"].to_i
@@ -82,14 +90,82 @@ class BoardsController < ApplicationController
       cells[row_to_change][col_to_change] = 0
     end
 
+    #Creates new hash representation
     cells = {"cells" => cells}.to_json
-    print(cells)
+    @board.current_state = cells
+    @board.generation = 0
+    @board.save
+    redirect_to @board
+  end
+
+  def add_col
+    @board = Board.find(params[:id])
+    cells = get_current_board_cells(@board)
+    cells.length.times do |row|
+      cells[row] << 0
+    end
+    cells = {"cells" => cells}.to_json
     @board.current_state = cells
     @board.generation = 0
     @board.save
     redirect_to @board
 
+  end
 
+  def add_row
+    @board = Board.find(params[:id])
+    cells = get_current_board_cells(@board)
+    #Adds a new row at an equal length to the lowest row
+    last_row_length = cells[cells.length - 1].length
+    new_row = []
+    last_row_length.times do
+      new_row << 0
+    end
+    cells << new_row
+    cells = {"cells" => cells}.to_json
+    @board.current_state = cells
+    @board.generation = 0
+    @board.save
+    redirect_to @board
+  end
+
+  def remove_col
+    @board = Board.find(params[:id])
+    cells = get_current_board_cells(@board)
+    #only removes column if the first row has a length > 1
+    if cells[0].length > 1
+      cells.length.times do |row|
+        cells[row].pop
+      end
+      cells = {"cells" => cells}.to_json
+      @board.current_state = cells
+      @board.generation = 0
+      @board.save
+    end
+    redirect_to @board
+  end
+
+  def remove_row
+    @board = Board.find(params[:id])
+    cells = get_current_board_cells(@board)
+    #only removes row length of board > 1
+    if cells.length > 1
+      cells.pop
+      cells = {"cells" => cells}.to_json
+      @board.current_state = cells
+      @board.generation = 0
+      @board.save
+    end
+    redirect_to @board
+  end
+
+  private
+
+  def get_current_board_cells(board)
+    current_state = board.current_state
+    data = JSON.parse(current_state)
+    cells = data["cells"]
+    return cells
   end
 
 end

@@ -7,7 +7,7 @@ ruby '2.7.0'
 gem 'rails_admin', '~> 2.0'
 
 #Bulma style framework
-gem 'bulma-rails', '~> 0.0.4.1'
+gem 'bulma-rails', '~> 0.8.0'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

@@ -3,7 +3,10 @@
 <style>
   .box{
     display: none;
-    width: 100%;
+    height: 50%;
+    width:50%;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 
   a:hover + .box,.box:hover{
@@ -19,12 +22,19 @@
 <br>
 <br>
 
+<%= form_with(url: boards_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+  <%=button_tag 'New Board', type: 'submit', class: 'button is-small'%>
+<% end %>
+
+<br>
+<br>
+
 <%count = 1 %>
 <% @boards.each do |board| %>
 
   Board <%= count %>: <a href=<%= "/boards/" + board.id.to_s %>>Link</a>
   <div class="box">
-    <iframe src= <%= "/boards/" + board.id.to_s %>, width = "800px", height = "600">
+    <iframe src= <%="/boards/"+board.id.to_s %>, width = "600px", height = "600px" style = "border-top:3px solid black;">
     </iframe>
   </div>
   <br>
