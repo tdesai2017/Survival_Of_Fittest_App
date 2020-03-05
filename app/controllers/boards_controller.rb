@@ -1,4 +1,5 @@
 require_relative '../conways_game'
+require_relative '../temp'
 class BoardsController < ApplicationController
 
 
@@ -14,12 +15,13 @@ class BoardsController < ApplicationController
   def create
     #We have to pass in an original "alive_count" and "dead_count"" in order to increase time complexity from the
     # algorithms perspective
-    new_board = {"current_state" => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
-                 "initial_state" => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
-                 "generation" => 0,
-                 "alive_count" => 5,
-                 "dead_count" => 7
-                }
+    new_board = {:current_state => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
+                 :initial_state => '{"cells":[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]}',
+                 :generation => 0,
+                 :alive_count => 5,
+                 :dead_count => 7,
+                 :stay_alive_count => "[2, 3]",
+                 :revive_count => "[3]"}
     @board = Board.new(new_board)
     @board.save
     redirect_to boards_path
@@ -43,10 +45,8 @@ class BoardsController < ApplicationController
 
   def next_state
     @board = Board.find(params[:id])
-    @cells = get_current_board_cells(@board)
-
     #Gets next iteration of board according to rules
-    cg_instance = ConwaysGame.new(@cells)
+    cg_instance = ConwaysGame.new(@board)
     cg_instance.next_generation
     cells = cg_instance.board
     new_board = {"cells" => cells }
@@ -115,15 +115,38 @@ class BoardsController < ApplicationController
   def add_col
     @board = Board.find(params[:id])
     cells = get_current_board_cells(@board)
+
+    num_max_length_rows = 0
+    max_length = 0
+
+
+    #finds the longest rows, and only adds to those
     cells.length.times do |row|
-      cells[row] << 0
+
+      max_length = [max_length, cells[row].length].max
+
     end
+
+    cells.length.times do |row|
+      if cells[row].length == max_length
+        num_max_length_rows += 1
+        cells[row] << 0
+      end
+    end
+
     cells_str = {"cells" => cells}.to_json
     @board.current_state = cells_str
     @board.generation = 0
-    @board.dead_count += cells.length
+    @board.dead_count += num_max_length_rows
     @board.save
     redirect_to @board
+
+    #IT WORKS
+    # @board = Board.find(params[:id])
+    # temp_potato(@board)
+    # redirect_to @board
+
+
 
   end
 
@@ -150,14 +173,29 @@ class BoardsController < ApplicationController
     cells = get_current_board_cells(@board)
     alive_count_decrease = 0
     dead_count_decrease = 0
+    #Fids the row with the longest length
+    max_length = 0
+
+
+    #finds the longest rows, and only adds to those
+    cells.length.times do |row|
+      max_length = [max_length, cells[row].length].max
+    end
+
 
     #only removes column if the first row has a length > 1
-    if cells[0].length > 1
+    if max_length > 1
       cells.length.times do |row|
-        #looks at last element to determine whether it was alive or dead before removal
+
+
+        if cells[row].length == max_length
+
+          #looks at last element to determine whether it was alive or dead before removal
         cells[row][cells[row].length - 1] == 1 ? alive_count_decrease += 1 : dead_count_decrease += 1
         #removes right most column iteratively
         cells[row].pop
+
+        end
       end
       cells = {"cells" => cells}.to_json
       @board.current_state = cells
@@ -230,7 +268,7 @@ class BoardsController < ApplicationController
       end
     end
     new_board = {:current_state => "{\"cells\":#{params[:custom_board]}}",
-                 :initial_state => "{\"cells\":#{params[:custom_board]}}",
+                 :initial_state => @board.current_state,
                  :generation => 0,
                  :alive_count => alive_count,
                  :dead_count => dead_count}
@@ -253,5 +291,6 @@ class BoardsController < ApplicationController
     cells = data["cells"]
     return cells
   end
+
 
 end

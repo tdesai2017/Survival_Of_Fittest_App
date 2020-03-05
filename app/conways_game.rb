@@ -6,12 +6,14 @@ class ConwaysGame
 
   #Board --> 2D Array
   def initialize(board)
-    @board = board
+    @board = get_cells_from_board_model(board)
     #duplicates board to a version that will not change
     @initial_board = Marshal.load(Marshal.dump(@board))
     @initial_board.freeze
     @alive_count = 0
     @dead_count = 0
+    @stay_alive_count = JSON.parse(board.stay_alive_count)
+    @revive_count = JSON.parse(board.revive_count)
 
     #*Design Choice
     # When a board is first initialized, the rails DB will already have populated the alive and dead
@@ -25,6 +27,7 @@ class ConwaysGame
   # simply checking where they were swapped and using those to calculate the new countes(refer to above
   # explanation for justification)
   def next_generation
+
     @alive_count = 0
     @dead_count = 0
     neighbors_board = ConwaysGame.create_neighbor_board(@board)
@@ -33,7 +36,9 @@ class ConwaysGame
         num_neighbors = neighbors_board[row][col]
 
         if @board[row][col] == 1
-          if num_neighbors < 2 or num_neighbors > 3
+          # if num_neighbors < 2 || num_neighbors > 3
+          # A cell should die if it's # of neighbors does not correspond to the amount needed to stay alive
+          if !@stay_alive_count.include?(num_neighbors)
             @board[row][col] = 0
             #Updates alive and dead count
             @dead_count += 1
@@ -42,7 +47,8 @@ class ConwaysGame
           end
 
         elsif @board[row][col] == 0
-          if num_neighbors == 3
+          # if num_neighbors == 3
+          if @revive_count.include?(num_neighbors)
             @board[row][col] = 1
             #Updates alive and dead count
             @alive_count += 1
@@ -104,7 +110,7 @@ class ConwaysGame
 
         #top left
         if row >= 1 and col >= 1
-          if board[row-1][col-1] == 1
+          if board[row - 1][col - 1] == 1
             live_neighbors += 1
 
           end
@@ -141,6 +147,15 @@ class ConwaysGame
   def reset_board
     @board = Marshal.load(Marshal.dump(@initial_board))
   end
+
+
+  def get_cells_from_board_model(board)
+    current_state = board.current_state
+    data = JSON.parse(current_state)
+    cells = data["cells"]
+    return cells
+  end
+
 end
 #
 # x = ConwaysGame.new([

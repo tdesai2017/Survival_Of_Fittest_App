@@ -5,21 +5,15 @@
 
 
 
-    <div style = "margin:30px" class="navbar-item" href="https://bulma.io">
+    <div style = "margin:30px" class="navbar-item">
       <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
     </div>
       <div class="navbar-item title is-5 ">
         <p  style = "margin-right:30px"><%="Current Generation: #{@board.generation}" %></p>
         <p style = "margin-right:30px"><%= "Live Cells: " + @board.alive_count.to_s%></p>
         <p style = "margin-right:30px"><%= "Dead Cells: " + @board.dead_count.to_s%></p>
-
-
       </div>
-
-
     </div>
-
-
 </nav>
 
 
@@ -39,6 +33,7 @@
         <%= submit_tag("Create" ) %>
       <% end %>
       <br>
+
 
 
       <p class = "subtitle is-4" style = 'margin-bottom: 5px'>Rows:</p>
@@ -87,9 +82,10 @@
     </div>
   </div>
 
-  <div class="column is-three-fifths">
+  <div class="column is-three-fifths" style = 'display: flex;justify-content: center;'>
 
-    <div style = " margin-top: 50px; margin-left: 100px">
+    <div style = " margin-top: 50px;">
+
       <% @cells.length.times do |row| %>
         <% @cells[row].length.times do |col| %>
           <%if @cells[row][col] == 1 %>
@@ -115,11 +111,77 @@
     </div>
   </div>
 
-</div>
+  <div class="column">
+
+    <%= form_with(url: "/search", method: "get") do %>
+
+      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4">Stay Alive Count:</p>
+      <br>
+      <%= check_box_tag(:pet_dog)%>
+      <%= label_tag(:pet_dog, "1") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "2") %>
+      <br>
+      <%= check_box_tag(:pet_dog) %>
+      <%= label_tag(:pet_dog, "3") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "4") %>
+      <br>
+      <%= check_box_tag(:pet_dog) %>
+      <%= label_tag(:pet_dog, "5") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "6") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "7") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "8") %>
+      <br>
+
+      <%= submit_tag("Confirm", style: "margin-top: 10px; margin-left: -4px") %>
+    <% end %>
 
 
+    <br>
+
+    <%= form_with(url: "/search", method: "get") do %>
+      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4">Revive Count:</p>
+      <br>
+      <%= check_box_tag(:pet_dog) %>
+      <%= label_tag(:pet_dog, "1") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "2") %>
+      <br>
+      <%= check_box_tag(:pet_dog) %>
+      <%= label_tag(:pet_dog, "3") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "4") %>
+      <br>
+      <%= check_box_tag(:pet_dog) %>
+      <%= label_tag(:pet_dog, "5") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "6") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "7") %>
+      <br>
+      <%= check_box_tag(:pet_cat) %>
+      <%= label_tag(:pet_cat, "8") %>
+      <br>
+      <%= submit_tag("Confirm", style: "margin-top: 10px; margin-left: -4px") %>
+    <% end %>
 
 
+  </div>
 
-<!--Same as-->
-<%#= link_to 'Back', boards_path %>
+
+  </div>
+
+
