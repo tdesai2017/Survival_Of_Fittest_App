@@ -11,8 +11,7 @@ Rails.application.routes.draw do
   post '/boards/:id/remove_row', to: 'boards#remove_row', as: :remove_row
   post '/boards/:id/save_as_initial_state', to: 'boards#save_as_initial_state', as: :save_as_initial_state
   post '/boards/:id/custom_board', to: 'boards#custom_board', as: :custom_board
-
-
-
+  post '/boards/:id/custom_stay_alive_count', to: 'boards#custom_stay_alive_count', as: :custom_stay_alive_count
+  post '/boards/:id/custom_revive_count', to: 'boards#custom_revive_count', as: :custom_revive_count
 
 end

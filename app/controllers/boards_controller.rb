@@ -9,6 +9,9 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find(params[:id])
+    print("#################################")
+    @stay_alive_count = JSON.parse(@board.stay_alive_count).join(', ')
+    @revive_count = JSON.parse(@board.revive_count).join(', ')
     @cells = get_current_board_cells(@board)
   end
 
@@ -279,6 +282,35 @@ class BoardsController < ApplicationController
                               :alive_count => new_board[:alive_count],
                               :dead_count => new_board[:dead_count])
     @board.save
+
+    redirect_to @board
+  end
+
+
+  def custom_stay_alive_count
+    @board = Board.find(params[:id])
+    new_count = []
+    1.upto(8) do |i|
+      new_count << i if params.key?(i.to_s)
+    end
+    new_count = new_count.to_s
+    puts("########################################")
+    print(new_count)
+    puts("\n########################################")
+    redirect_to @board
+  end
+
+
+  def custom_revive_count
+    @board = Board.find(params[:id])
+    new_count = []
+    1.upto(8) do |i|
+      new_count << i if params.key?(i.to_s)
+    end
+    new_count = new_count.to_s
+    puts("########################################")
+    print(new_count)
+    puts("\n########################################")
 
     redirect_to @board
   end

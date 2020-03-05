@@ -113,67 +113,66 @@
 
   <div class="column">
 
-    <%= form_with(url: "/search", method: "get") do %>
+    <%= form_with(url: custom_stay_alive_count_path, method: "post") do %>
 
-      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4">Stay Alive Count:</p>
+      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4 has-text-link">Stay Alive Count: <%= @stay_alive_count %></p>
       <br>
-      <%= check_box_tag(:pet_dog)%>
-      <%= label_tag(:pet_dog, "1") %>
+      <%= check_box_tag('1')%>
+      <%= label_tag('1', "1") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "2") %>
+      <%= check_box_tag('2') %>
+      <%= label_tag('2', "2") %>
       <br>
-      <%= check_box_tag(:pet_dog) %>
-      <%= label_tag(:pet_dog, "3") %>
+      <%= check_box_tag('3') %>
+      <%= label_tag('3', "3") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "4") %>
+      <%= check_box_tag('4') %>
+      <%= label_tag('4', "4") %>
       <br>
-      <%= check_box_tag(:pet_dog) %>
-      <%= label_tag(:pet_dog, "5") %>
+      <%= check_box_tag('5') %>
+      <%= label_tag('5', "5") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "6") %>
+      <%= check_box_tag('6') %>
+      <%= label_tag('6', "6") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "7") %>
+      <%= check_box_tag('7') %>
+      <%= label_tag('7', "7") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "8") %>
+      <%= check_box_tag('8') %>
+      <%= label_tag('8', "8") %>
       <br>
 
       <%= submit_tag("Confirm", style: "margin-top: 10px; margin-left: -4px") %>
     <% end %>
 
-
     <br>
 
-    <%= form_with(url: "/search", method: "get") do %>
-      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4">Revive Count:</p>
+    <%= form_with(url: custom_revive_count_path, method: "post") do %>
+      <p style = 'margin-bottom: -10px; margin-left: -7px' class = "subtitle is-4 has-text-link">Revive Count: <%= @revive_count %></p>
       <br>
-      <%= check_box_tag(:pet_dog) %>
-      <%= label_tag(:pet_dog, "1") %>
+      <%= check_box_tag('1') %>
+      <%= label_tag('1', "1") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "2") %>
+      <%= check_box_tag('2') %>
+      <%= label_tag('2', "2") %>
       <br>
-      <%= check_box_tag(:pet_dog) %>
-      <%= label_tag(:pet_dog, "3") %>
+      <%= check_box_tag('3') %>
+      <%= label_tag('3', "3") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "4") %>
+      <%= check_box_tag('4') %>
+      <%= label_tag('4', "4") %>
       <br>
-      <%= check_box_tag(:pet_dog) %>
-      <%= label_tag(:pet_dog, "5") %>
+      <%= check_box_tag('5') %>
+      <%= label_tag('5', "5") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "6") %>
+      <%= check_box_tag('6') %>
+      <%= label_tag('6', "6") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "7") %>
+      <%= check_box_tag('7') %>
+      <%= label_tag('7', "7") %>
       <br>
-      <%= check_box_tag(:pet_cat) %>
-      <%= label_tag(:pet_cat, "8") %>
+      <%= check_box_tag('8') %>
+      <%= label_tag('8', "8") %>
       <br>
       <%= submit_tag("Confirm", style: "margin-top: 10px; margin-left: -4px") %>
     <% end %>
