@@ -296,7 +296,7 @@ class BoardsController < ApplicationController
   def custom_stay_alive_count
     @board = Board.find(params[:id])
     new_count = []
-    1.upto(8) do |i|
+    9.times do |i|
       new_count << i if params.key?(i.to_s)
     end
     new_count = new_count.to_s
@@ -309,7 +309,7 @@ class BoardsController < ApplicationController
   def custom_revive_count
     @board = Board.find(params[:id])
     new_count = []
-    1.upto(8) do |i|
+    9.times do |i|
       new_count << i if params.key?(i.to_s)
     end
     new_count = new_count.to_s

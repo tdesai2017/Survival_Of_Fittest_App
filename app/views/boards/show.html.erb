@@ -115,7 +115,10 @@
 
     <%= form_with(url: custom_stay_alive_count_path, method: "post") do %>
 
-      <p style = 'margin-bottom: -10px; margin-left: -15px' class = "subtitle is-4 has-text-link">Stay Alive Count: <%= @stay_alive_count %></p>
+      <p style = 'margin-bottom: -10px; margin-left: -35px' class = "subtitle is-4 has-text-link">Stay Alive Count: <%= @stay_alive_count %></p>
+      <br>
+      <%= check_box_tag('0') %>
+      <%= label_tag('0', "0") %>
       <br>
       <%= check_box_tag('1')%>
       <%= label_tag('1', "1") %>
@@ -148,7 +151,10 @@
     <br>
 
     <%= form_with(url: custom_revive_count_path, method: "post") do %>
-      <p style = 'margin-bottom: -10px; margin-left: -15px' class = "subtitle is-4 has-text-link">Revive Count: <%= @revive_count %></p>
+      <p style = 'margin-bottom: -10px; margin-left: -35px' class = "subtitle is-4 has-text-link">Revive Count: <%= @revive_count %></p>
+      <br>
+      <%= check_box_tag('0') %>
+      <%= label_tag('0', "0") %>
       <br>
       <%= check_box_tag('1') %>
       <%= label_tag('1', "1") %>
