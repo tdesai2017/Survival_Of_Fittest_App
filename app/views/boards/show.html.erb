@@ -27,7 +27,7 @@
       <p class = "is-size-7" style = "margin-left: 3px"	>Takes in a 2D Array of 1s and 0s... </p>
       <%= form_with(url: custom_board_path, method: "post") do %>
         <div style = "width:250px; margin-bottom: -15px">
-        <%= text_area_tag(:custom_board, "", class: 'textarea is-primary', style: "width:10%") %>
+        <%= text_area_tag(:custom_board, @cells, class: 'textarea is-primary', style: "width:10%") %>
         </div>
         <br>
         <%= submit_tag("Create" ) %>
