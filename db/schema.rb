@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_05_191507) do
+ActiveRecord::Schema.define(version: 2020_03_06_001647) do
 
   create_table "boards", force: :cascade do |t|
     t.text "current_state"
@@ -20,8 +20,10 @@ ActiveRecord::Schema.define(version: 2020_03_05_191507) do
     t.integer "generation"
     t.integer "alive_count"
     t.integer "dead_count"
-    t.text "stay_alive_count"
-    t.text "revive_count"
+    t.text "current_stay_alive_count"
+    t.text "current_revive_count"
+    t.text "initial_revive_count"
+    t.text "initial_stay_alive_count"
   end
 
 end

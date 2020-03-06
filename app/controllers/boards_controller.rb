@@ -10,8 +10,8 @@ class BoardsController < ApplicationController
   def show
     @board = Board.find(params[:id])
     print("#################################")
-    @stay_alive_count = JSON.parse(@board.stay_alive_count).join(', ')
-    @revive_count = JSON.parse(@board.revive_count).join(', ')
+    @stay_alive_count = JSON.parse(@board.current_stay_alive_count).join(', ')
+    @revive_count = JSON.parse(@board.current_revive_count).join(', ')
     @cells = get_current_board_cells(@board)
   end
 
@@ -23,8 +23,10 @@ class BoardsController < ApplicationController
                  :generation => 0,
                  :alive_count => 5,
                  :dead_count => 7,
-                 :stay_alive_count => "[2, 3]",
-                 :revive_count => "[3]"}
+                 :current_stay_alive_count => "[2, 3]",
+                 :current_revive_count => "[3]",
+                 :initial_stay_alive_count => "[2, 3]",
+                 :initial_revive_count => "[3]"}
     @board = Board.new(new_board)
     @board.save
     redirect_to boards_path
@@ -41,6 +43,8 @@ class BoardsController < ApplicationController
   def save_as_initial_state
     @board = Board.find(params[:id])
     @board.initial_state = @board.current_state
+    @board.initial_stay_alive_count = @board.current_stay_alive_count
+    @board.initial_revive_count = @board.current_revive_count
     @board.save
     redirect_to board_path
 
@@ -72,6 +76,8 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
     initial_state = @board.initial_state
     @board.current_state = initial_state
+    @board.current_revive_count = @board.initial_revive_count
+    @board.current_stay_alive_count = @board.initial_stay_alive_count
     @board.generation = 0
     @board.alive_count = initial_state.count('1')
     @board.dead_count = initial_state.count('0')
@@ -294,9 +300,8 @@ class BoardsController < ApplicationController
       new_count << i if params.key?(i.to_s)
     end
     new_count = new_count.to_s
-    puts("########################################")
-    print(new_count)
-    puts("\n########################################")
+    @board.current_stay_alive_count = new_count
+    @board.save
     redirect_to @board
   end
 
@@ -308,10 +313,8 @@ class BoardsController < ApplicationController
       new_count << i if params.key?(i.to_s)
     end
     new_count = new_count.to_s
-    puts("########################################")
-    print(new_count)
-    puts("\n########################################")
-
+    @board.current_revive_count = new_count
+    @board.save
     redirect_to @board
   end
 

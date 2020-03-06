@@ -12,8 +12,8 @@ class ConwaysGame
     @initial_board.freeze
     @alive_count = 0
     @dead_count = 0
-    @stay_alive_count = JSON.parse(board.stay_alive_count)
-    @revive_count = JSON.parse(board.revive_count)
+    @stay_alive_count = JSON.parse(board.current_stay_alive_count)
+    @revive_count = JSON.parse(board.current_revive_count)
 
     #*Design Choice
     # When a board is first initialized, the rails DB will already have populated the alive and dead
