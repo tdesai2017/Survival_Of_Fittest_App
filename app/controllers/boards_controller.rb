@@ -103,13 +103,19 @@ class BoardsController < ApplicationController
     row_to_change = coordinates["row"].to_i
     col_to_change = coordinates["col"].to_i
 
+    # None --> Dead --> Alive
+    # Dead to Alive
     if cells[row_to_change][col_to_change] == 0
       cells[row_to_change][col_to_change] = 1
-      @board.alive_count += 1
       @board.dead_count -= 1
-    else
+      @board.alive_count += 1
+    # Alive to None
+    elsif cells[row_to_change][col_to_change] == 1
+      cells[row_to_change][col_to_change] = -1
+      @board.alive_count -= 1
+    # None to Alive
+    elsif cells[row_to_change][col_to_change] == -1
       cells[row_to_change][col_to_change] = 0
-      @board.alive_count -=1
       @board.dead_count += 1
     end
 
@@ -268,8 +274,8 @@ class BoardsController < ApplicationController
     custom_board.length.times do |row|
       redirect_to @board and return if custom_board[row].class.to_s != "Array"
       custom_board[row].length.times do |col|
-        #Ensures each value is either a 0 or a 1
-        if custom_board[row][col] != 0 && custom_board[row][col] != 1
+        # Ensures each value is either a 0 , 1, or -1
+        if custom_board[row][col] != 0 && custom_board[row][col] != 1 && custom_board[row][col] != -1
           redirect_to @board and return
 
         end
@@ -277,7 +283,7 @@ class BoardsController < ApplicationController
       end
     end
     new_board = {:current_state => "{\"cells\":#{params[:custom_board]}}",
-                 :initial_state => @board.current_state,
+                 :initial_state => @board.initial_state,
                  :generation => 0,
                  :alive_count => alive_count,
                  :dead_count => dead_count}

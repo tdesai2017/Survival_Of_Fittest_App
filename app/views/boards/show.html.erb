@@ -1,4 +1,12 @@
 
+<!--Style for empty button clicks-->
+<style>
+.no-border:focus, .no-border:active, .no-border:hover{
+box-shadow: none!important;
+outline: 0;
+}
+</style>
+
 <nav class="navbar is-success" role="navigation" aria-label="main navigation" style = 'margin-bottom: 90px'>
   <div class="navbar-brand">
 <!--    #dccbb1-->
@@ -24,7 +32,7 @@
 
 
       <p class = "subtitle is-4" style = 'margin-bottom: 5px'>Custom Board:</p>
-      <p class = "is-size-7" style = "margin-left: 3px"	>Takes in a 2D Array of 1s and 0s... </p>
+      <p class = "is-size-7" style = "margin-left: 3px"	>Takes in a 2D Array of 1s, 0s, and -1s... </p>
       <%= form_with(url: custom_board_path, method: "post") do %>
         <div style = "width:250px; margin-bottom: -15px">
         <%= text_area_tag(:custom_board, @cells, class: 'textarea is-primary', style: "width:10%") %>
@@ -90,12 +98,24 @@
         <% @cells[row].length.times do |col| %>
           <%if @cells[row][col] == 1 %>
 
-            <!--        local = true ensures that the page will refresh after the submission is complete-->
+            <!-- local = true ensures that the page will refresh after the submission is complete-->
+            <!--Alive Cell-->
             <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
               <%= hidden_field_tag(:coordinates, "{\"row\" : #{row}, \"col\": #{col}}") %>
               <%= submit_tag( "L",class: "button is-primary is-rounded", style: "margin: 2px; height:40px; width:40px") %>
             <% end %>
 
+            <!-- Empty cell-->
+            <%elsif @cells[row][col] == -1 %>
+            <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
+              <%= hidden_field_tag(:coordinates, "{\"row\" : #{row}, \"col\": #{col}}") %>
+              <%= submit_tag("" ,class: "button is-rounded no-border", style: "margin: 2px; height:40px; width:40px; border-color: transparent;") %>
+            <% end %>
+
+
+              <%#= submit_tag( "DD",class: "button is-rounded", style: "margin: 2px; height:40px; width:40px; background:transparent; border:none; color:transparent;") %>
+
+          <!--Dead Cell-->
           <%else%>
             <%= form_with(url: flip_cell_path, local:true, method: "post", :html => { :style => 'display:inline;' }) do %>
               <%= hidden_field_tag(:coordinates, "{\"row\" : #{row}, \"col\": #{col}}") %>
