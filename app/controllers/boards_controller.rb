@@ -1,5 +1,4 @@
 require_relative '../conways_game'
-require_relative '../temp'
 class BoardsController < ApplicationController
 
 
@@ -155,14 +154,6 @@ class BoardsController < ApplicationController
     @board.dead_count += num_max_length_rows
     @board.save
     redirect_to @board
-
-    #IT WORKS
-    # @board = Board.find(params[:id])
-    # temp_potato(@board)
-    # redirect_to @board
-
-
-
   end
 
   def add_row
